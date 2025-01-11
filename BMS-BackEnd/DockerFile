@@ -1,8 +1,27 @@
+# Build stage
 FROM maven:3-eclipse-temurin-17 AS build
-COPY . .
-RUN mvn clean package -DskipTest
 
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the Maven project files
+COPY pom.xml ./
+COPY src ./src
+
+# Build the project and skip tests
+RUN mvn clean package -DskipTests
+
+# Runtime stage
 FROM eclipse-temurin:17-alpine
-COPY --from=build /target/*.jar demo.jar
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the built JAR from the build stage to the runtime stage
+COPY --from=build /app/target/BMS-BackEnd*.jar BMS-BackEnd.jar
+
+# Expose the application port
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+
+# Command to run the Spring Boot application
+ENTRYPOINT ["java", "-jar", "BMS-BackEnd.jar"]
