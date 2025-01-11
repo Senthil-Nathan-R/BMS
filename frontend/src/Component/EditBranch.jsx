@@ -120,13 +120,6 @@ const EditBranch = () => {
     });
   };
 
-  const handleVehicleTypeChange = (type) => {
-    const isSelected = formData.vehicleType.includes(type);
-    const updatedVehicleTypes = isSelected
-      ? formData.vehicleType.filter((t) => t !== type)
-      : [...formData.vehicleType, type];
-    setFormData({ ...formData, vehicleType: updatedVehicleTypes });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
