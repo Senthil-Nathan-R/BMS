@@ -1,17 +1,24 @@
-# Use an official Maven image as the base
-FROM maven:3.8.4-openjdk-11
+# Use Maven to build the application
+FROM maven:3.8.4-openjdk-11 AS builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven `pom.xml` and source code
+# Copy pom.xml and source code
 COPY ./BMS-BackEnd /app
 
-# Run the Maven build command
-RUN mvn clean package
+# Build the project using Maven
+RUN mvn clean package -DskipTests
 
-# Expose the port that the app will run on
+# Use a smaller JDK image for running the app
+FROM openjdk:11-jre-slim
+
+WORKDIR /app
+
+# Copy the JAR file from the builder stage
+COPY --from=builder /app/target/BMS-BackEnd-0.0.1-SNAPSHOT.jar /app/BMS-BackEnd.jar
+
+# Expose the port your app runs on
 EXPOSE 8080
 
-# Command to run the app (assuming it's a Spring Boot app)
-CMD ["java", "-jar", "target/BMS-BackEnd-0.0.1-SNAPSHOT.jar"]
+# Command to run the Spring Boot application
+CMD ["java", "-jar", "BMS-BackEnd.jar"]
