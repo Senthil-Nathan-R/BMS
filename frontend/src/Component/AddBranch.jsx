@@ -109,12 +109,13 @@ const AddBranch = () => {
   };
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const newValue = type === "number" ? Number(value) : value;
+    const newValue = type === "number" ? Number(value) : value; 
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : newValue,
     });
   };
+  
 
   const handleBankDetailChange = (index, e) => {
     const { name, value } = e.target;
