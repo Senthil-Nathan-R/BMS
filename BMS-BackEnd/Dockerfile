@@ -1,8 +1,11 @@
-# Use an official Java 17 base image
+# Use an official OpenJDK image with Java 17
 FROM openjdk:17-jdk-slim
 
 # Set the working directory
 WORKDIR /app
+
+# Install Maven
+RUN apt-get update && apt-get install -y maven
 
 # Copy the project files
 COPY . .
