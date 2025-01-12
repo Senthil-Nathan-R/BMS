@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*"); // Allow all origins
+        registry.addMapping("/**").allowedOrigins("https://tiny-frangollo-907e03.netlify.app/"); // Allow all origins
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.BMS_BackEnd.Model.BranchDetails;
 import com.example.BMS_BackEnd.Service.BranchService;
 
-@CrossOrigin(origins = {"http://localhost:3000", "https://your-frontend.netlify.app"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://tiny-frangollo-907e03.netlify.app/"})
 @RestController
 public class BranchController {
 
