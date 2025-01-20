@@ -40,8 +40,8 @@ public class BranchDetails {
 //	private List<String> vehicleType;
 	
 	// Modify the vehicleType field to relate to BranchDetailsVehicleType
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "branchDetails")
-    private List<BranchDetailsVehicleType> vehicleTypes;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "branch")
+    private List<BranchDetailsVehicleType> vehicleType;
 
 	private String branchContactNo;
 	private String branchAlternaterContactNo;
@@ -187,11 +187,11 @@ public class BranchDetails {
 //	}
 	
 	public List<BranchDetailsVehicleType> getVehicleTypes() {
-		return vehicleTypes;
+		return vehicleType;
 	}
 
-	public void setVehicleTypes(List<BranchDetailsVehicleType> vehicleTypes) {
-		this.vehicleTypes = vehicleTypes;
+	public void setVehicleTypes(List<BranchDetailsVehicleType> vehicleType) {
+		this.vehicleType = vehicleType;
 	}
 
 	public String getBranchContactNo() {

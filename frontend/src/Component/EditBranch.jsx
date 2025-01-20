@@ -64,11 +64,12 @@ const EditBranch = () => {
       axios
         .get(`${API_URL}/api/branches/${branchCode}`)
         .then((response) => {
-          setFormData(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching branch data:", error);
+        const fetchedData = response.data;
+        setFormData({
+          ...fetchedData,
+          vehicleType: fetchedData.vehicleType || [],  // Ensures vehicleType is an array
         });
+      })
     }
   }, [branchCode]);
 
@@ -112,17 +113,34 @@ const EditBranch = () => {
     setFormData({ ...formData, bankDetails: updatedBankDetails });
   };
 
-  const handleSelectAll = () => {
-    const isAllSelected = formData.vehicleType.length === allVehicleTypes.length;
-    setFormData({
-      ...formData,
-      vehicleType: isAllSelected ? [] : allVehicleTypes,
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setFormData((prev) => ({
+        ...prev,
+        vehicleType: [...allVehicleTypes],
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        vehicleType: [],
+      }));
+    }
+  };
+
+  const handleVehicleTypeChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prev) => {
+      const updatedVehicleTypes = checked
+        ? [...prev.vehicleType, value]
+        : prev.vehicleType.filter((type) => type !== value);
+  
+      return { ...prev, vehicleType: updatedVehicleTypes };
     });
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Form Data Submitted: ", formData);
     axios
       .post(`${API_URL}/api/branches`, formData)
       .then((response) => {
@@ -224,14 +242,7 @@ const EditBranch = () => {
           </label>
           {allVehicleTypes.map((type) => (
             <label key={type} style={{ display: "inline" }}>
-              <input type="checkbox" name="vehicleType" value={type} checked={formData.vehicleType.includes(type)} onChange={(e) => {
-                const { value, checked } = e.target;
-                const updatedVehicleTypes = checked
-                  ? [...formData.vehicleType, value]
-                  : formData.vehicleType.filter((t) => t !== value);
-                setFormData({ ...formData, vehicleType: updatedVehicleTypes });
-              }}
-              />
+              <input type="checkbox" name="vehicleType" value={type} checked={formData.vehicleType.includes(type)} onChange={handleVehicleTypeChange}/>
               {type}
             </label>
           ))}

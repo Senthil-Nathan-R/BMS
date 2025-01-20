@@ -10,6 +10,7 @@ import com.example.BMS_BackEnd.DAO.BranchDAO;
 import com.example.BMS_BackEnd.DAO.VehicleDAO;
 import com.example.BMS_BackEnd.Model.BankDetails;
 import com.example.BMS_BackEnd.Model.BranchDetails;
+import com.example.BMS_BackEnd.Model.BranchDetailsVehicleType;
 
 @Service
 public class BranchService {
@@ -19,27 +20,48 @@ public class BranchService {
 
 	@Autowired
 	private BankDAO bank;
-	
+
 	@Autowired
 	private VehicleDAO vehicle;
 
-	// This method will save BranchDetails, BankDetails, and VehicleTypes at once
 	public void addBranchDetails(BranchDetails branchDetails) {
-		// Saving BranchDetails will also save associated BankDetails and VehicleTypes
+
 		branch.save(branchDetails);
+
+		List<BankDetails> bankDetailsList = branchDetails.getBankDetails();
+		List<BranchDetailsVehicleType> vehicleTypeList = branchDetails.getVehicleTypes();
+
+		String branchCode = branchDetails.getBranchCode();
+		if (bankDetailsList != null && !bankDetailsList.isEmpty()) {
+			for (BankDetails bankDetail : bankDetailsList) {
+				bankDetail.setBranchCode(branchCode);
+				bank.save(bankDetail);
+			}
+		}
+
+		if (vehicleTypeList != null && !vehicleTypeList.isEmpty()) {
+			for (BranchDetailsVehicleType vehicleType : vehicleTypeList) {
+				
+				vehicleType.setBranch(branchDetails);
+			}
+			vehicle.saveAll(vehicleTypeList); 
+		}
 	}
 
-	// Fetching all branch details
 	public List<BranchDetails> getAllBranches() {
 		return branch.findAll();
 	}
 
-	// Fetching branch details by branch code and including related bank details
 	public BranchDetails getBranchByCode(String branchCode) {
 		BranchDetails br = branch.findByBranchCode(branchCode);
 
-		// Fetching and setting related bank details
+		Long branchId = br.getId();
+
+		List<BranchDetailsVehicleType> vehicleTypes =vehicle.findByBranchId(branchId);
+
 		List<BankDetails> bankDetails = bank.findByBranchCode(branchCode);
+
+		br.setVehicleTypes(vehicleTypes);
 		br.setBankDetails(bankDetails);
 
 		return br;

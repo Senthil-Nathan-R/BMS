@@ -84,8 +84,8 @@ const AddBranch = () => {
       contactPersonName: "",
       contactPersonContactNo: "",
       contactPersonAlternateContactNo: "",
-      contactPersonWhatsappNo: "",
-      contactPersonEMailID: "",
+      contactPersonAlternateContactNo: "",
+      contactPersonAlternateContactNo: "",
       openingBalance: "",
       openingDate: "",
       minimumAmount: "",
@@ -109,13 +109,12 @@ const AddBranch = () => {
   };
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const newValue = type === "number" ? Number(value) : value; 
+    const newValue = type === "number" ? Number(value) : value;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : newValue,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
-  
 
   const handleBankDetailChange = (index, e) => {
     const { name, value } = e.target;
@@ -159,12 +158,20 @@ const AddBranch = () => {
       })
   };
 
-  const handleSelectAll = () => {
-    setFormData({
-      ...formData,
-      vehicleType: allVehicleTypes,
-    });
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setFormData({
+        ...formData,
+        vehicleType: allVehicleTypes,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        vehicleType: [],
+      });
+    }
   };
+  
 
   const allVehicleTypes = ["Car", "Bike", "Truck"];
 
