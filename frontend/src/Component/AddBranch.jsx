@@ -112,7 +112,7 @@ const AddBranch = () => {
     const newValue = type === "number" ? Number(value) : value;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : newValue,
     });
   };
 
