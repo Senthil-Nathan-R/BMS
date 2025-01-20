@@ -60,18 +60,21 @@ const EditBranch = () => {
   const allVehicleTypes = ["Car", "Bike", "Truck"];
 
   useEffect(() => {
-    if (branchCode) {
-      axios
-        .get(`${API_URL}/api/branches/${branchCode}`)
-        .then((response) => {
-          const fetchedData = response.data;
-          setFormData({
-            ...fetchedData,
-            vehicleType: Array.isArray(fetchedData.vehicleType) ? fetchedData.vehicleType : []
-          });
-        })
-      }
-  }, [branchCode]);
+  if (branchCode) {
+    axios
+      .get(`${API_URL}/api/branches/${branchCode}`)
+      .then((response) => {
+        const fetchedData = response.data;
+        setFormData({
+          ...fetchedData,
+          vehicleType: Array.isArray(fetchedData.vehicleType) ? fetchedData.vehicleType : [], 
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching branch data:", error);
+      });
+  }
+}, [branchCode]);
 
   const handleDiscard = () => {
     navigate("/");
