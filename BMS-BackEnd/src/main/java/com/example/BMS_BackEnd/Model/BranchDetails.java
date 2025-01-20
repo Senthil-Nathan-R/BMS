@@ -36,6 +36,10 @@ public class BranchDetails {
 	private String gstin;
 	private String branchType;
 
+//	@ElementCollection
+//	private List<String> vehicleType;
+	
+	// Modify the vehicleType field to relate to BranchDetailsVehicleType
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "branchDetails")
     private List<BranchDetailsVehicleType> vehicleTypes;
 
@@ -174,6 +178,14 @@ public class BranchDetails {
 		this.branchType = branchType;
 	}
 
+//	public List<String> getVehicleType() {
+//		return vehicleType;
+//	}
+//
+//	public void setVehicleType(List<String> vehicleType) {
+//		this.vehicleType = vehicleType;
+//	}
+	
 	public List<BranchDetailsVehicleType> getVehicleTypes() {
 		return vehicleTypes;
 	}

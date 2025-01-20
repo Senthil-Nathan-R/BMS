@@ -1,10 +1,11 @@
 package com.example.BMS_BackEnd.Model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Entity;
 
 @Entity
 public class BranchDetailsVehicleType {
@@ -15,7 +16,8 @@ public class BranchDetailsVehicleType {
     private String vehicleType;
 
     @ManyToOne
-    private BranchDetails branchDetails;  
+    @JoinColumn(name = "branch_id")
+    private BranchDetails branchDetails;  // Many vehicle types can belong to one branch
 
     // Getters and setters
     public Long getId() {
