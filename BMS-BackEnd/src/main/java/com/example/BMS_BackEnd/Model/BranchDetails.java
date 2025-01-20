@@ -36,8 +36,8 @@ public class BranchDetails {
 	private String gstin;
 	private String branchType;
 
-	@ElementCollection
-	private List<String> vehicleType;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "branchDetails")
+    private List<BranchDetailsVehicleType> vehicleTypes;
 
 	private String branchContactNo;
 	private String branchAlternaterContactNo;
@@ -174,12 +174,12 @@ public class BranchDetails {
 		this.branchType = branchType;
 	}
 
-	public List<String> getVehicleType() {
-		return vehicleType;
+	public List<BranchDetailsVehicleType> getVehicleTypes() {
+		return vehicleTypes;
 	}
 
-	public void setVehicleType(List<String> vehicleType) {
-		this.vehicleType = vehicleType;
+	public void setVehicleTypes(List<BranchDetailsVehicleType> vehicleTypes) {
+		this.vehicleTypes = vehicleTypes;
 	}
 
 	public String getBranchContactNo() {
