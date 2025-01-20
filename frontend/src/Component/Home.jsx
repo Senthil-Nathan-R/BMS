@@ -43,53 +43,53 @@ function Home() {
   }, []);
 
   const downloadExcel = () => {
-    const data = branches.map((branch, index) => ({
-      "#": index + 1,
-      "Branch Code": branch.branchCode,
-      "Branch Name": branch.branchName,
-      "Branch Short Name": branch.branchShortName,
-      "Door No": branch.doorNo,
-      "Street": branch.street,
-      "Pincode": branch.pincode,
-      "Locality": branch.locality,
-      "City": branch.city,
-      "State": branch.state,
-      "PAN No": branch.panno,
-      "GSTIN": branch.gstin,
-      "Branch Type": branch.branchType,
-      "Vehicle Type": branch.vehicleType.join(", "),
-      "Branch Contact No": branch.branchContactNo,
-      "Branch Alternater Contact No": branch.branchAlternaterContactNo,
-      "Branch Whatsapp No": branch.branchWhatsappNo,
-      "Branch Email ID": branch.branchEmailID,
-      "Incharger Name": branch.inchargerName,
-      "Incharger Contact No": branch.inchargerContactNo,
-      "Incharger Alternate Contact No": branch.inchargerAlternateContactNo,
-      "Incharger Whatsapp No": branch.inchargerWhatsappNo,
-      "Incharger Email ID": branch.inchargerEmailID,
-      "Contact Person Name": branch.contactPersonName,
-      "Contact Person Phone No": branch.contactPersonContactNo,
-      "Contact Person Alternate No": branch.contactPersonAlternateContactNo,
-      "Contact Person Whatsapp No": branch.contactPersonAlternateContactNo,
-      "Contact Person Email ID": branch.contactPersonAlternateContactNo,
-      "Opening Balance": branch.openingBalance,
-      "Opening Date": branch.openingDate,
-      "Minimum Amount": branch.minimumAmount,
-      "Maximum Amount": branch.maximumAmount,
-      "Monthly Maximum Amount": branch.monthlyMaximumAmount,
-      "Maximum Unsettled Amount": branch.maximumUnsettledAmount,
-      "Effective Date": branch.effectiveDate,
-      "Bank Details": branch.bankDetails.map(bank => `Account No: ${bank.accountNumber},Account Holder Name: ${bank.accountHolderName}, IFSC: ${bank.ifscCode}, Bank Name: ${bank.bankName},Branch Name: ${bank.branchName}`).join(" | ")
-    }));
+  const data = branches.map((branch, index) => ({
+    "#": index + 1,
+    "Branch Code": branch.branchCode,
+    "Branch Name": branch.branchName,
+    "Branch Short Name": branch.branchShortName,
+    "Door No": branch.doorNo,
+    "Street": branch.street,
+    "Pincode": branch.pincode,
+    "Locality": branch.locality,
+    "City": branch.city,
+    "State": branch.state,
+    "PAN No": branch.panno,
+    "GSTIN": branch.gstin,
+    "Branch Type": branch.branchType,
+    "Vehicle Type": Array.isArray(branch.vehicleType) ? branch.vehicleType.join(", ") : "", // Check if vehicleType is an array
+    "Branch Contact No": branch.branchContactNo,
+    "Branch Alternater Contact No": branch.branchAlternaterContactNo,
+    "Branch Whatsapp No": branch.branchWhatsappNo,
+    "Branch Email ID": branch.branchEmailID,
+    "Incharger Name": branch.inchargerName,
+    "Incharger Contact No": branch.inchargerContactNo,
+    "Incharger Alternate Contact No": branch.inchargerAlternateContactNo,
+    "Incharger Whatsapp No": branch.inchargerWhatsappNo,
+    "Incharger Email ID": branch.inchargerEmailID,
+    "Contact Person Name": branch.contactPersonName,
+    "Contact Person Phone No": branch.contactPersonContactNo,
+    "Contact Person Alternate No": branch.contactPersonAlternateContactNo,
+    "Contact Person Whatsapp No": branch.contactPersonAlternateContactNo,
+    "Contact Person Email ID": branch.contactPersonAlternateContactNo,
+    "Opening Balance": branch.openingBalance,
+    "Opening Date": branch.openingDate,
+    "Minimum Amount": branch.minimumAmount,
+    "Maximum Amount": branch.maximumAmount,
+    "Monthly Maximum Amount": branch.monthlyMaximumAmount,
+    "Maximum Unsettled Amount": branch.maximumUnsettledAmount,
+    "Effective Date": branch.effectiveDate,
+    "Bank Details": branch.bankDetails.map(bank => `Account No: ${bank.accountNumber},Account Holder Name: ${bank.accountHolderName}, IFSC: ${bank.ifscCode}, Bank Name: ${bank.bankName},Branch Name: ${bank.branchName}`).join(" | ")
+  }));
 
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Branches");
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(blob, "Branches.xlsx");
+};
 
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Branches");
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(blob, "Branches.xlsx");
-  };
 
   const [columnsVisibility, setColumnsVisibility] = useState({
     hash: true,
